@@ -460,7 +460,14 @@
   // Create this user in Supabase Dashboard → Authentication (see README).
   const JOURNAL_EMAIL = "jheenpatac24@gmail.com";
 
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      storage: window.localStorage
+    }
+  });
 
   // ---- UI refs ----
   const lockScreen = document.getElementById("lock-screen");
