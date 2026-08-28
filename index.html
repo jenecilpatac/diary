@@ -404,6 +404,7 @@
     <button type="submit" class="lock-btn" id="lock-btn">Unlock</button>
     <div class="lock-error" id="lock-error"></div>
   </form>
+  <p class="lock-note"><span class="sync-dot" id="sync-dot"></span>Entries sync to your private online database, so they follow you across devices and browsers. Only your passcode can unlock them.</p>
 </div>
 
 <!-- ============ APP ============ -->
@@ -440,6 +441,7 @@
     <div>No entries yet. Start with today.</div>
   </div>
 
+  <footer class="foot">private · synced to your own online database</footer>
 </div>
 
 <script>
@@ -460,14 +462,7 @@
   // Create this user in Supabase Dashboard → Authentication (see README).
   const JOURNAL_EMAIL = "jheenpatac24@gmail.com";
 
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      storage: window.localStorage
-    }
-  });
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // ---- UI refs ----
   const lockScreen = document.getElementById("lock-screen");
