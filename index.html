@@ -227,6 +227,11 @@
     border:1px solid var(--line);
   }
   #export-btn:hover{color:var(--ink); background:transparent; border-color:var(--ink-soft);}
+  .entry-title.masked, .entry-excerpt.masked{
+    letter-spacing:0.12em;
+    color:var(--ink-soft);
+    user-select:none;
+  }
 
   /* Entry editor */
   #editor{
@@ -620,6 +625,16 @@
   const searchInput = document.getElementById("search-input");
   const savingIndicator = document.getElementById("saving-indicator");
 
+  function maskText(text){
+    if(!text) return "";
+    // Preserve word shape roughly but hide actual content, capped so length isn't too revealing.
+    return text
+      .split(" ")
+      .map(word => "*".repeat(Math.max(3, Math.min(word.length, 8))))
+      .slice(0, 12)
+      .join(" ");
+  }
+
   document.getElementById("today-date").textContent = new Date().toLocaleDateString(undefined, {
     weekday: "long", year: "numeric", month: "long", day: "numeric"
   });
@@ -677,10 +692,14 @@
     filtered.forEach(entry => {
       const li = document.createElement("li");
       li.className = "entry-card";
+      const rawTitle = entry.title || "Untitled";
+      const rawBody = entry.body || "";
+      const displayTitle = maskText(rawTitle);
+      const displayBody = maskText(rawBody);
       li.innerHTML = `
         <span class="entry-date">${fmtDate(entry.created_at)}</span>
-        <h3 class="entry-title">${escapeHtml(entry.title || "Untitled")}</h3>
-        <p class="entry-excerpt">${escapeHtml(entry.body || "")}</p>
+        <h3 class="entry-title masked">${displayTitle}</h3>
+        <p class="entry-excerpt masked">${displayBody}</p>
         <div class="entry-actions">
           <button class="icon-btn icon-view" data-id="${entry.id}" title="View">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
